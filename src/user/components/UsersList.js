@@ -3,7 +3,6 @@ import './UsersList.css';
 import UserItem from './UserItem';
 import Card from '../../shared/components/UIElements/Card';
 
-
 const UsersList = (props) => {
   if (props.items.length === 0) {
     return (
@@ -18,11 +17,11 @@ const UsersList = (props) => {
       {props.items.map((user) => {
         return (
           <UserItem
-            key={user.id}
-            id={user.id}
+            key={user._id}
+            id={user._id}
             image={user.image}
             name={user.name}
-            placeCount={user.places}
+            placeCount={user.places.length}
           />
         );
       })}
