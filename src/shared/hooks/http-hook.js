@@ -18,13 +18,20 @@ export const useHttpClient = () => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
+        setIsLoading(false);
         return responseData;
       } catch (error) {
         setError(error.message);
+        setIsLoading(false);
+        throw error;
       }
-      setIsLoading(false);
     },
     []
   );
-  return { isLoading, error, sendRequest };
+
+  const clearError = () => {
+    setError(null);
+  };
+
+  return { isLoading, error, sendRequest, clearError };
 };
