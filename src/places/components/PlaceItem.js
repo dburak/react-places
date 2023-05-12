@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import './PlaceItem.css';
 import Card from '../../shared/components/UIElements/Card';
 import Button from '../../shared/components/FormElements/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 const PlaceItem = (props) => {
   const auth = useContext(AuthContext);
+  const { sendRequest } = useHttpClient();
 
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -24,9 +27,17 @@ const PlaceItem = (props) => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const history = useHistory();
+
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log('Deleting...');
+    try {
+      await sendRequest(
+        `http://localhost:8802/api/places/${props.id}`,
+        'DELETE'
+      );
+      history.push('/');
+    } catch (error) {}
   };
 
   return (
